@@ -105,8 +105,8 @@ function App() {
             <div
               style={{
                 padding: 20,
-                paddingLeft: 45,
-                paddingRight: 45,
+                paddingLeft: 35,
+                paddingRight: 35,
                 marginTop: 35,
               }}
             >
@@ -124,41 +124,44 @@ function App() {
                   id="outlined-basic"
                   label="NMS Quantity"
                   variant="outlined"
-                  color={"primary"}
+                  color="secondary"
                   focused
                   inputProps={fontColor}
                   placeholder="Enter NMS Quantity"
                   onChange={(e) => setAmount(e.target.value)}
                 />
                 <TextField
-                  id="outlined-basic"
+                style={{marginTop: 20, marginBottom: 20}}
                   label="Reward Yield (%)"
-                  variant="outlined"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <div style={{ color: "#A2A3A3" }}>%</div>
-                      </InputAdornment>
-                    ),
-                  }}
                   placeholder="Enter reward yield"
-                  style={{ marginTop: 20, marginBottom: 20 }}
+                  label="NMS Quantity"
+                  variant="outlined"
                   color="secondary"
                   focused
                   inputProps={fontColor}
                   onChange={(e) => setCustomYield(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                
+                        <div style={{ color: "#A2A3A3" }}>%</div>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <TextField
                   label="NMS Purchase Price ($)"
+                  placeholder="Enter purchase price"
+                  label="NMS Quantity"
                   variant="outlined"
                   color="secondary"
                   focused
-                  placeholder="Enter purchase price"
                   inputProps={fontColor}
-                  onChange={(e) => setCustomPrice(e.target.value)}
+                  onChange={(e) => setCustomYield(e.target.value)}
                   InputProps={{
                     endAdornment: (
-                      <InputAdornment position="end">
+                      <InputAdornment position="start">
+                        {" "}
                         <div style={{ color: "#A2A3A3" }}>$</div>
                       </InputAdornment>
                     ),
