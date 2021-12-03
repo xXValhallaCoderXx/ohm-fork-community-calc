@@ -1,6 +1,6 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { Button } from "@material-ui/core";
+
 import { Typography } from "@mui/material";
 import Image from "next/image";
 import Layout from "../shared/components/Layout/layout";
