@@ -1,20 +1,28 @@
-import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
-
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+const { palette } = createTheme();
 // Create a theme instance.
 let theme = createTheme({
+  // typography: {
+  //   fontFamily: [
+  //     "Montserrat",
+  //     "Roboto",
+  //     '"Helvetica Neue"',
+  //     "Arial",
+  //     "sans-serif",
+  //   ].join(","),
+  // },
   palette: {
-    text: {
-      primary: "#666666",
-      secondary: "#999999",
-      // disabled: "",
-      // hint: ""
-    },
     primary: {
-        main: "#17191B",
+      main: "#17191B",
     },
     secondary: {
-        main: "#d8cab9",
+      main: "#d8cab9",
     },
+    myAwesomeColor: palette.augmentColor({
+      color: {
+        main: "#00ff00"
+      }
+    }),
 
     background: {
       default: "#fff",
