@@ -29,16 +29,20 @@ const AccordionSummary = styled((props) => (
 ))(({ theme }) => ({
   backgroundColor: "#17191B",
   flexDirection: "row-reverse",
+  "& .MuiAccordionSummary-expandIconWrapper": {
+    color: "blue",
+  },
   "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
     transform: "rotate(90deg)",
+    color: "red",
   },
   "& .MuiAccordionSummary-content": {
-    marginLeft: 1,
+    marginLeft: 10,
   },
 }));
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: 2,
+  padding: 20,
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 export default function Faq() {

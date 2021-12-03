@@ -41,10 +41,10 @@ const NavigationBar = () => {
         >
           Home
         </Typography>
-        <Link href="/calculator">
-          <Typography variant="h6" component="div">
+        <Link color="text.primary" href="/calculator">
+        
             Calculator
-          </Typography>
+        
         </Link>
 
         <Link href="/faq">

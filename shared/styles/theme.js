@@ -4,8 +4,8 @@ import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
 let theme = createTheme({
   palette: {
     text: {
-      primary: "#666666",
-      secondary: "#999999",
+      primary: "red",
+      secondary: "green",
       // disabled: "",
       // hint: ""
     },
