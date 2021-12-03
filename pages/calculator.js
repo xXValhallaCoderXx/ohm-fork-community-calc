@@ -108,8 +108,7 @@ function App() {
             <div
               style={{
                 padding: 20,
-                paddingLeft: 35,
-                paddingRight: 35,
+          
                 marginTop: 35,
               }}
             >
@@ -267,7 +266,7 @@ const Container = styled.div`
 
 const TopRow = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 
   flex-direction: row;
 `;
@@ -277,7 +276,7 @@ const CardContainer = styled(Card)`
 
   border-radius: 10px;
   background-color: #17191b;
-  padding: 15px;
+  padding: 20px;
 `;
 
 const ContentRow = styled.div`
@@ -296,17 +295,6 @@ const FormContainer = styled.div`
 const InfoRow = styled.div`
   display: flex;
   justify-content: space-between;
-`;
-
-const WhiteBorderTextField = styled(TextField)`
-  & label.Mui-focused {
-    color: white;
-  }
-  & .MuiOutlinedInput-root {
-    &.Mui-focused fieldset {
-      border-color: white;
-    }
-  }
 `;
 
 export default App;
