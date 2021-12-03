@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import styled from '@emotion/styled'
+import styled from "@emotion/styled";
 
 import Card from "@mui/material/Card";
-
 import CardContent from "@mui/material/CardContent";
 import Layout from "../shared/components/Layout/layout";
 import Typography from "@mui/material/Typography";
@@ -25,12 +24,23 @@ function App() {
   return (
     <Layout>
       <Container>
+        <Typography
+          color="secondary"
+          style={{
+            marginBottom: 50,
+            fontSize: 50,
+            fontWeight: 500,
+          }}
+        >
+          Nemesis Calculator
+        </Typography>
         <CardContainer sx={{ minWidth: 850 }}>
           <CardContent>
             <TopRow>
               <div>
                 <Typography
-                  style={{ fontWeight: 400, color: "#A2A3A3" }}
+                  color="cheese"
+                  style={{ fontWeight: 400 }}
                   variant="h5"
                 >
                   Current Nemesis Price
@@ -114,7 +124,7 @@ function App() {
                   id="outlined-basic"
                   label="NMS Quantity"
                   variant="outlined"
-                  color="secondary"
+                  color={"primary"}
                   focused
                   inputProps={fontColor}
                   placeholder="Enter NMS Quantity"
@@ -228,6 +238,13 @@ function App() {
             </ContentRow>
           </CardContent>
         </CardContainer>
+        <Typography
+          style={{ fontWeight: 400, color: "#A2A3A3", marginTop: 50 }}
+          variant="h6"
+        >
+          Note: This is in early stages - More features can be added and
+          suggestions welcome
+        </Typography>
       </Container>
     </Layout>
   );
@@ -238,6 +255,7 @@ const Container = styled.div`
 
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
   background-color: #1e232b;
 `;

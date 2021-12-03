@@ -59,6 +59,9 @@ export default function Faq() {
       >
         FAQ PAGE
       </Typography>
+      <Typography style={{ fontWeight: 400, color: "#A2A3A3", marginTop: 50 }}>
+        Note: This is in early stages - If proven useful it will be imrpoved
+      </Typography>
       <Container>
         <Accordion
           expanded={expanded === "panel1"}
@@ -121,6 +124,6 @@ const Container = styled.div`
   display: flex;
   width: 750px;
   flex-direction: column;
-  margin-top: 100px;
+  margin-top: 80px;
   align-items: center;
 `;

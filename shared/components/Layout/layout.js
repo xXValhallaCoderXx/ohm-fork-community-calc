@@ -14,7 +14,7 @@ const LayoutSimpleContainer = ({ children }) => {
 
 const Container = styled.div`
   height: 100vh;
-
+  padding-top: 65px;
   display: flex;
   justify-content: center;
   align-items: center;

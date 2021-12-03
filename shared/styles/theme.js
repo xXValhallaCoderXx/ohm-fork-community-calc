@@ -1,5 +1,5 @@
 import { createTheme, responsiveFontSizes } from "@material-ui/core/styles";
-
+const { palette } = createTheme();
 // Create a theme instance.
 let theme = createTheme({
   // typography: {
@@ -12,18 +12,17 @@ let theme = createTheme({
   //   ].join(","),
   // },
   palette: {
-    text: {
-      primary: "#17191B",
-      secondary: "#17191B",
-      // disabled: "",
-      // hint: ""
-    },
     primary: {
       main: "#17191B",
     },
     secondary: {
       main: "#d8cab9",
     },
+    myAwesomeColor: palette.augmentColor({
+      color: {
+        main: "#00ff00"
+      }
+    }),
 
     background: {
       default: "#fff",

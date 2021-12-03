@@ -6,15 +6,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import NextLink from "next/link";
-import { makeStyles } from "@material-ui/core/styles";
-import IconButton from "@mui/material/IconButton";
 
 import Logo from "../../../shared/images/logo.png";
-const navStyles = makeStyles((theme) => ({
-  topNav: {
-    backgroundColor: theme.palette.primary.main,
-  },
-}));
 
 // eslint-disable-next-line react/display-name
 const LinkBehavior = forwardRef((props, ref) => (
@@ -22,34 +15,36 @@ const LinkBehavior = forwardRef((props, ref) => (
 ));
 
 const NavigationBar = () => {
-  const classes = navStyles();
   return (
-    <AppBar className={classes.topNav}>
+    <AppBar>
       <Toolbar>
-        <IconButton size="large" edge="start" color="inherit" aria-label="menu">
-          <Image
-            src={Logo}
-            alt="Picture of the author"
-            width={40}
-            height={40}
-          />
-        </IconButton>
+        <Image src={Logo} alt="Picture of the author" width={40} height={40} />
         <Typography
           variant="h6"
-          component="div"
-          sx={{ marginLeft: 3, flexGrow: 1 }}
+          style={{ color: "#d8cab9", textDecoration: "none" }}
+          sx={{ marginLeft: 3, flexGrow: 1, marginTop: 0.5 }}
         >
           Home
         </Typography>
-        <Link color="text.primary" href="/calculator">
-          Calculator
-        </Link>
+        <LinkContainer>
+          <Link
+            style={{ color: "#d8cab9", textDecoration: "none" }}
+            href="/calculator"
+          >
+            <Typography variant="h6" component="div">
+              Calculator
+            </Typography>
+          </Link>
 
-        <Link href="/faq">
-          <Typography variant="h6" component="div">
-            Faq
-          </Typography>
-        </Link>
+          <Link
+            style={{ color: "#d8cab9", textDecoration: "none" }}
+            href="/faq"
+          >
+            <Typography variant="h6" component="div">
+              Faq
+            </Typography>
+          </Link>
+        </LinkContainer>
       </Toolbar>
     </AppBar>
   );
@@ -68,8 +63,8 @@ const StyledLink = styled(Link)`
 
 const LinkContainer = styled.div`
   display: flex;
-  justify-content: center;
-  width: 100%;
+  justify-content: space-around;
+  width: 200px;
 `;
 
 export default NavigationBar;
