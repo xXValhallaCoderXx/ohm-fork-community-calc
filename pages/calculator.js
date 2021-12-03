@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-
+import axios from "axios";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Layout from "../shared/components/Layout/layout";
@@ -12,14 +12,39 @@ const fontColor = {
   style: { color: "#A2A3A3" },
 };
 
+var usdFormat = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+
+var percentFormat = new Intl.NumberFormat("en-US", {
+  style: "percent",
+  minimumFractionDigits: 5,
+  maximumFractionDigits: 5,
+});
+
 function App() {
+  // TODO - Use some kind of reducer / state management
   const [nmsPrice, setNmsPrice] = useState(0);
   const [yieldAPY, setYieldAPY] = useState(0);
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
-  const [customYield, setCustomYield] = useState("454,104,057,531.1%");
-  const [customPrice, setCustomPrice] = useState("$4,342.34");
+  const [customYield, setCustomYield] = useState("");
+  const [purchasePrice, setPurchasePrice] = useState("");
   const [days, setDays] = useState(1);
+
+  useEffect(() => {
+    // TODO - Move this API call out of UI layer
+    axios.get("/api/calculator").then((res) => {
+      setNmsPrice(res.data.priceUSD);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log("PRUCHASE: ", purchasePrice);
+    console.log("AMOUNT: ", amount);
+    console.log("YIELD: ", customYield);
+  }, [amount, customYield, purchasePrice]);
 
   return (
     <Layout>
@@ -39,8 +64,7 @@ function App() {
             <TopRow>
               <div>
                 <Typography
-                  color="cheese"
-                  style={{ fontWeight: 400 }}
+                  style={{ fontWeight: 400, color: "#A2A3A3" }}
                   variant="h5"
                 >
                   Current Nemesis Price
@@ -53,11 +77,8 @@ function App() {
                     fontSize: 22,
                     fontWeight: 500,
                   }}
-                  endAdornment={
-                    <InputAdornment position="end">NMS</InputAdornment>
-                  }
                 >
-                  {customPrice}
+                  {usdFormat.format(nmsPrice)}
                 </Typography>
               </div>
               <div>
@@ -78,27 +99,9 @@ function App() {
                     fontWeight: 500,
                   }}
                 >
-                  {customYield}
-                </Typography>
-              </div>
-              <div>
-                <Typography
-                  style={{ fontWeight: 400, color: "#A2A3A3" }}
-                  variant="h5"
-                >
-                  Your Balance
-                </Typography>
-                <Typography
-                  gutterBottom
-                  style={{
-                    textAlign: "center",
-                    width: "100%",
-                    color: "white",
-                    fontSize: 22,
-                    fontWeight: 500,
-                  }}
-                >
-                  3.435353 NMS
+                  {customYield
+                    ? percentFormat.format(customYield / 100)
+                    : "N / A"}
                 </Typography>
               </div>
             </TopRow>
@@ -131,10 +134,9 @@ function App() {
                   onChange={(e) => setAmount(e.target.value)}
                 />
                 <TextField
-                style={{marginTop: 20, marginBottom: 20}}
+                  style={{ marginTop: 20, marginBottom: 20 }}
                   label="Reward Yield (%)"
                   placeholder="Enter reward yield"
-                  label="NMS Quantity"
                   variant="outlined"
                   color="secondary"
                   focused
@@ -143,7 +145,6 @@ function App() {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="start">
-                
                         <div style={{ color: "#A2A3A3" }}>%</div>
                       </InputAdornment>
                     ),
@@ -152,16 +153,15 @@ function App() {
                 <TextField
                   label="NMS Purchase Price ($)"
                   placeholder="Enter purchase price"
-                  label="NMS Quantity"
                   variant="outlined"
                   color="secondary"
                   focused
+                  value={purchasePrice}
                   inputProps={fontColor}
-                  onChange={(e) => setCustomYield(e.target.value)}
+                  onChange={(e) => setPurchasePrice(e.target.value)}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="start">
-                        {" "}
                         <div style={{ color: "#A2A3A3" }}>$</div>
                       </InputAdornment>
                     ),
@@ -179,7 +179,7 @@ function App() {
                       color: "#A2A3A3",
                     }}
                   >
-                    Your initial Investment
+                    Your Initial Investment
                   </Typography>
                   <Typography
                     gutterBottom
@@ -189,31 +189,10 @@ function App() {
                       fontSize: 20,
                     }}
                   >
-                    $2400.43
+                    {usdFormat.format(amount * purchasePrice)}
                   </Typography>
                 </InfoRow>
-                <InfoRow>
-                  <Typography
-                    style={{
-                      textAlign: "center",
-                      fontWeight: 500,
-                      letterSpacing: 1,
-                      color: "#A2A3A3",
-                    }}
-                  >
-                    Current Value
-                  </Typography>
-                  <Typography
-                    gutterBottom
-                    style={{
-                      textAlign: "center",
-                      color: "white",
-                      fontSize: 20,
-                    }}
-                  >
-                    $3897.45
-                  </Typography>
-                </InfoRow>
+
                 <InfoRow>
                   <Typography
                     gutterBottom
@@ -224,7 +203,7 @@ function App() {
                       color: "#A2A3A3",
                     }}
                   >
-                    NMS rewards estimate
+                    NMS Rewards Estimate
                   </Typography>
                   <Typography
                     gutterBottom
@@ -234,7 +213,30 @@ function App() {
                       fontSize: 20,
                     }}
                   >
-                    0.003234
+                    {percentFormat.format(0 / 100)}
+                  </Typography>
+                </InfoRow>
+                <InfoRow>
+                  <Typography
+                    gutterBottom
+                    style={{
+                      textAlign: "center",
+                      fontWeight: 500,
+                      letterSpacing: 1,
+                      color: "#A2A3A3",
+                    }}
+                  >
+                    USD Value Estimate
+                  </Typography>
+                  <Typography
+                    gutterBottom
+                    style={{
+                      textAlign: "center",
+                      color: "white",
+                      fontSize: 20,
+                    }}
+                  >
+                    {usdFormat.format(0)}
                   </Typography>
                 </InfoRow>
               </div>
