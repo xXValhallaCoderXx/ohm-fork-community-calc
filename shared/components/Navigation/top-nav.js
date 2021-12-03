@@ -24,7 +24,7 @@ const LinkBehavior = forwardRef((props, ref) => (
 const NavigationBar = () => {
   const classes = navStyles();
   return (
-    <AppBar className={classes.topNav} position="static">
+    <AppBar className={classes.topNav}>
       <Toolbar>
         <IconButton size="large" edge="start" color="inherit" aria-label="menu">
           <Image
@@ -42,9 +42,7 @@ const NavigationBar = () => {
           Home
         </Typography>
         <Link color="text.primary" href="/calculator">
-        
-            Calculator
-        
+          Calculator
         </Link>
 
         <Link href="/faq">
