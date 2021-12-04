@@ -33,7 +33,7 @@ function App() {
   const [yieldRate, setYieldRate] = useState(0);
   const [amount, setAmount] = useState(0);
   const [totalToken, setTotalToken] = useState(0);
-  const [profit, setProfit] = useState(0);
+
   const [purchasePrice, setPurchasePrice] = useState("");
 
   const [totalNms, setTotalNms] = useState(0);
@@ -58,7 +58,6 @@ function App() {
     const totalTokens = 1 * (1 + yieldRate / 100) ** (3 * 30);
     setYieldRate(yieldRate);
     setTotalToken(totalTokens);
-    setProfit(totalToken * purchasePrice);
   }, [apy]);
 
   useEffect(() => {
