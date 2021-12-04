@@ -27,8 +27,10 @@ function App() {
   // TODO - Use some kind of reducer / state management
   const [nmsPrice, setNmsPrice] = useState(0);
   const [apy, setApy] = useState(0);
-
+  const [yieldRate, setYieldRate] = useState(0)
   const [amount, setAmount] = useState(0);
+  const [totalToken, setTotalToken] = useState(0)
+  const [profit, setProfit] = useState(0)
   const [customYield, setCustomYield] = useState("");
   const [purchasePrice, setPurchasePrice] = useState("");
   const [days, setDays] = useState(1);
@@ -47,8 +49,22 @@ function App() {
       console.log("NUMBER OF TOKEN: ", numberOfToken)
       const totalValue = numberOfToken * 622.69;
       console.log("TOTL:", totalValue)
-      
+   
   }, [apy])
+
+  useEffect(() => {
+    // Handle Yield 
+    console.log("APY: ", apy);
+    const yieldRate = (((apy / 100)-1)**(1/(3*365))-1) * 100;
+    const totalTokens = 1 * (1+(yieldRate / 100))**(3 * 30)
+    setYieldRate(yieldRate)
+    setTotalToken(totalTokens)
+    console.log("PURCHADE PRICE: ", purchasePrice)
+    setProfit(totalToken * purchasePrice)
+  }, [apy])
+  
+  console.log("TOKEN TOTAL: ", totalToken);
+  console.log("PROFIT: ", profit);
   // useEffect(() => {
   //   console.log("PRUCHASE: ", purchasePrice);
   //   console.log("AMOUNT: ", amount);
@@ -99,7 +115,7 @@ function App() {
               </div>
               <div>
                 <Typography
-                  style={{ fontWeight: 400, color: "#A2A3A3" }}
+                  style={{ fontWeight: 400, color: "#A2A3A3", textAlign: "center" }}
                   variant="h5"
                 >
                   Current APY
@@ -134,8 +150,8 @@ function App() {
                     fontWeight: 500,
                   }}
                 >
-                  {customYield
-                    ? percentFormat.format(customYield / 100)
+                  {yieldRate
+                    ? percentFormat.format(yieldRate / 100)
                     : "N / A"}
                 </Typography>
               </div>
@@ -182,8 +198,9 @@ function App() {
                   variant="outlined"
                   color="secondary"
                   focused
+                  value={yieldRate}
                   inputProps={fontColor}
-                  onChange={(e) => setCustomYield(e.target.value)}
+                  onChange={(e) => setYieldRate(e.target.value)}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="start">
@@ -267,7 +284,7 @@ function App() {
                       fontSize: 20,
                     }}
                   >
-                    {percentFormat.format(0 / 100)}
+                    {Number.parseFloat(totalToken).toFixed(5)}
                   </Typography>
                 </InfoRow>
                 <InfoRow>
@@ -290,7 +307,7 @@ function App() {
                       fontSize: 20,
                     }}
                   >
-                    {usdFormat.format(0)}
+                    {usdFormat.format(profit)}
                   </Typography>
                 </InfoRow>
               </div>
