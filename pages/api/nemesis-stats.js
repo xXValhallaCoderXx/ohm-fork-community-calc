@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       priceUSD: coingGecko.data.market_data.current_price.usd,
       ath: coingGecko.data.market_data.ath.usd,
     };
-    res.status(200).json(response);
+    res.status(200).json(coingGecko.data);
   } else {
     res.status(200).json({ error: "sadsa" });
   }
