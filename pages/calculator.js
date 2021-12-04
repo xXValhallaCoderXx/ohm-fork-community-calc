@@ -33,7 +33,7 @@ function App() {
   const [yieldRate, setYieldRate] = useState(0);
   const [amount, setAmount] = useState(0);
   const [totalToken, setTotalToken] = useState(0);
-
+  const [value, setTotalValue] = useState(0)
   const [purchasePrice, setPurchasePrice] = useState("");
 
   const [totalNms, setTotalNms] = useState(0);
@@ -43,9 +43,7 @@ function App() {
 
   useEffect(() => {
     // TODO - Move this API call out of UI layer
-    axios.get("/api/calculator").then((res) => {
-      setNmsPrice(res.data.priceUSD);
-    });
+    axios.get("/api/calculator").then((res) => setNmsPrice(res.data.priceUSD));
   }, []);
 
   useEffect(() => {
@@ -55,24 +53,19 @@ function App() {
   useEffect(() => {
     // Handle Yield
     const yieldRate = ((apy / 100 - 1) ** (1 / (3 * 365)) - 1) * 100;
-    const totalTokens = 1 * (1 + yieldRate / 100) ** (3 * 30);
     setYieldRate(yieldRate);
-    setTotalToken(totalTokens);
   }, [apy]);
 
   useEffect(() => {
-    console.log("PRUCHASE: ", purchasePrice);
-    console.log("AMOUNT: ", amount);
-    console.log("YIELD: ", yieldRate);
-    console.log("DAYS: ", days);
-    const amountInNms = amount * (1 + yieldRate) ** (3 * days);
-    setTotalNms(amountInNms);
-    const nmsParsed = parseFloat(amountInNms.toString().slice(0, 6));
-    const priceParsed = parseFloat(purchasePrice);
+    // console.log("APY: ", purchasePrice * (apy / 100));
+   
+    const epochYield = (((apy / 100)-1)**(1/(3*365))-1) * 100;
+    const numberOfToken = 1 * (1+(epochYield / 100))**(3 * days);
+    const totalValue = numberOfToken * purchasePrice;
+    setTotalToken(numberOfToken)
+    setTotalValue(totalValue)
 
-    console.log("NMS: ", nmsParsed);
-    console.log("AMOUNT IN USD: ", priceParsed);
-  }, [amount, yieldRate, purchasePrice, days]);
+  }, [amount, yieldRate, purchasePrice, days, apy]);
 
   // TODO - Make this shit into components
   return (
@@ -130,7 +123,7 @@ function App() {
                 fontWeight={500}
                 color="white"
               >
-                {yieldRate ? percentFormat.format(yieldRate / 100) : "0.00%"}
+                {yieldRate > 200 ? percentFormat.format(yieldRate / 100) : "0.00%"}
               </Typography>
             </Grid>
             <Grid item xs={12} mt={{ xs: 5, md: 7 }}>
@@ -271,7 +264,7 @@ function App() {
                   NMS Rewards Estimate
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
-                  {totalToken ? parseFloat(totalNms.toString().slice(0, 6)) : 0}
+                  {totalToken ? parseFloat(totalToken.toString().slice(0, 6)) : 0}
                 </Typography>
               </Grid>
               <Grid
@@ -293,11 +286,8 @@ function App() {
                   USD Value Estimate
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
-                  {totalNms
-                    ? usdFormat.format(
-                        parseFloat(totalNms.toString().slice(0, 6)) *
-                          purchasePrice
-                      )
+                  {apy > 200
+                    ? usdFormat.format(value)
                     : "$0.00"}
                 </Typography>
               </Grid>
