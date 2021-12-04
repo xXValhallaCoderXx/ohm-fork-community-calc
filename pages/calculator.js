@@ -33,13 +33,13 @@ function App() {
   const [yieldRate, setYieldRate] = useState(0);
   const [amount, setAmount] = useState(0);
   const [totalToken, setTotalToken] = useState(0);
-  const [value, setTotalValue] = useState(0)
+  const [value, setTotalValue] = useState(0);
   const [purchasePrice, setPurchasePrice] = useState("");
-
-  const [totalNms, setTotalNms] = useState(0);
+  const [percentGain, setPercentGain] = useState(0)
   const [days, setDays] = useState(30);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
+
 
   useEffect(() => {
     // TODO - Move this API call out of UI layer
@@ -57,14 +57,15 @@ function App() {
   }, [apy]);
 
   useEffect(() => {
-    // console.log("APY: ", purchasePrice * (apy / 100));
-   
-    const epochYield = (((apy / 100)-1)**(1/(3*365))-1) * 100;
-    const numberOfToken = 1 * (1+(epochYield / 100))**(3 * days);
-    const totalValue = numberOfToken * purchasePrice;
-    setTotalToken(numberOfToken)
-    setTotalValue(totalValue)
+    const epochYield = ((apy / 100 - 1) ** (1 / (3 * 365)) - 1) * 100;
+    const numberOfToken = amount * (1 + epochYield / 100) ** (3 * days);
 
+    const totalValue = numberOfToken * purchasePrice;
+    setTotalToken(numberOfToken);
+    setTotalValue(totalValue);
+   const increase = totalValue - (amount * purchasePrice)
+   const result = increase / (amount * purchasePrice) * 100;
+   setPercentGain(result)
   }, [amount, yieldRate, purchasePrice, days, apy]);
 
   // TODO - Make this shit into components
@@ -266,7 +267,9 @@ function App() {
                   NMS Rewards Estimate
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
-                  {totalToken ? parseFloat(totalToken.toString().slice(0, 6)) : 0}
+                  {totalToken
+                    ? parseFloat(totalToken.toString().slice(0, 6))
+                    : 0}
                 </Typography>
               </Grid>
               <Grid
@@ -288,9 +291,29 @@ function App() {
                   USD Value Estimate
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
-                  {apy > 200
-                    ? usdFormat.format(value)
-                    : "$0.00"}
+                  {apy > 200 ? usdFormat.format(value) : "$0.00"}
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                mt={{ xs: 2, md: 0 }}
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Typography
+                  fontSize={{ xs: 10, md: 13 }}
+                  fontWeight={500}
+                  style={{
+                    color: "#A2A3A3",
+                  }}
+                >
+                  Profit in %
+                </Typography>
+                <Typography fontSize={{ xs: 15, md: 17 }} color="white">
+                  {apy > 200 && amount ? `${parseFloat(percentGain.toString().slice(0, 6))}%` : "0%"}
                 </Typography>
               </Grid>
             </Grid>
@@ -314,12 +337,6 @@ function App() {
   );
 }
 
-const NumberTextfield = styled(TextField)`
-  webkit-inner-spin-button,
-  webkit-outer-spin-button {
-    webkit-appearance: none;
-  }
-`;
 
 const TitleRow = styled.div`
   margin-top: 20px;
