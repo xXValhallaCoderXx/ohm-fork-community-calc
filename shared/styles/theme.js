@@ -18,11 +18,9 @@ let theme = createTheme({
     secondary: {
       main: "#d8cab9",
     },
-    myAwesomeColor: palette.augmentColor({
-      color: {
-        main: "#00ff00"
-      }
-    }),
+    info: {
+      main: "hsla(0, 0%, 100%, .6)"
+    },
 
     background: {
       default: "#fff",
