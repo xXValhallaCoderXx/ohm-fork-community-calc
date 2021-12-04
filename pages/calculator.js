@@ -337,12 +337,6 @@ function App() {
   );
 }
 
-const NumberTextfield = styled(TextField)`
-  webkit-inner-spin-button,
-  webkit-outer-spin-button {
-    webkit-appearance: none;
-  }
-`;
 
 const TitleRow = styled.div`
   margin-top: 20px;
