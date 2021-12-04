@@ -36,12 +36,10 @@ function App() {
   const [profit, setProfit] = useState(0);
   const [purchasePrice, setPurchasePrice] = useState("");
 
-  const [totalNms, setTotalNms] = useState(0)
+  const [totalNms, setTotalNms] = useState(0);
   const [days, setDays] = useState(30);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
-
-
 
   useEffect(() => {
     // TODO - Move this API call out of UI layer
@@ -69,7 +67,7 @@ function App() {
     console.log("YIELD: ", yieldRate);
     console.log("DAYS: ", days);
     const amountInNms = amount * (1 + yieldRate) ** (3 * days);
-    setTotalNms(amountInNms)
+    setTotalNms(amountInNms);
     const nmsParsed = parseFloat(amountInNms.toString().slice(0, 6));
     const priceParsed = parseFloat(purchasePrice);
 
@@ -156,11 +154,12 @@ function App() {
                 variant="outlined"
                 color="secondary"
                 focused
-                
+                type="number"
+                min="0"
                 size={matches ? "small" : ""}
                 fullWidth
                 inputProps={fontColor}
-                onChange={(e) => setApy(e.target.value.replace(/,/g, ''))}
+                onChange={(e) => setApy(e.target.value.replace(/,/g, ""))}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="start">
@@ -177,6 +176,7 @@ function App() {
                 variant="outlined"
                 color="secondary"
                 focused
+                type="number"
                 size={matches ? "small" : ""}
                 fullWidth
                 value={yieldRate ? yieldRate.toFixed(5) : "0.00"}
@@ -196,6 +196,7 @@ function App() {
                 variant="outlined"
                 color="secondary"
                 focused
+                type="number"
                 size={matches ? "small" : ""}
                 inputProps={fontColor}
                 placeholder="Enter NMS Quantity"
@@ -208,6 +209,7 @@ function App() {
                 variant="outlined"
                 color="secondary"
                 focused
+                type="number"
                 fullWidth
                 size={matches ? "small" : ""}
                 value={purchasePrice}
@@ -292,7 +294,12 @@ function App() {
                   USD Value Estimate
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
-                  {totalNms ? usdFormat.format( parseFloat(totalNms.toString().slice(0, 6)) * purchasePrice) : "$0.00"}
+                  {totalNms
+                    ? usdFormat.format(
+                        parseFloat(totalNms.toString().slice(0, 6)) *
+                          purchasePrice
+                      )
+                    : "$0.00"}
                 </Typography>
               </Grid>
             </Grid>
@@ -315,6 +322,13 @@ function App() {
     </Layout>
   );
 }
+
+const NumberTextfield = styled(TextField)`
+  webkit-inner-spin-button,
+  webkit-outer-spin-button {
+    webkit-appearance: none;
+  }
+`;
 
 const TitleRow = styled.div`
   margin-top: 20px;
