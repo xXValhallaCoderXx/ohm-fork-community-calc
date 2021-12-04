@@ -123,7 +123,7 @@ function App() {
                 fontWeight={500}
                 color="white"
               >
-                {yieldRate > 200 ? percentFormat.format(yieldRate / 100) : "0.00%"}
+                {apy > 200 ? `${yieldRate.toString().slice(0, 6)}%` : "0.00%"}
               </Typography>
             </Grid>
             <Grid item xs={12} mt={{ xs: 5, md: 7 }}>
@@ -164,17 +164,19 @@ function App() {
               <TextField
                 style={{ marginTop: 20, marginBottom: 20 }}
                 label="Reward Yield (%)"
-                placeholder="Enter reward yield"
+                placeholder="Not editable right now - Use APY"
                 variant="outlined"
                 color="secondary"
                 focused
+                readOnly
                 type="number"
                 size={matches ? "small" : ""}
                 fullWidth
-                value={yieldRate ? yieldRate.toFixed(5) : "0.00"}
+                value={yieldRate ? yieldRate.toString().slice(0, 6) : ""}
                 inputProps={fontColor}
                 onChange={(e) => setYieldRate(e.target.value)}
                 InputProps={{
+                  readOnly: true,
                   endAdornment: (
                     <InputAdornment position="start">
                       <div style={{ color: "#A2A3A3" }}>%</div>
