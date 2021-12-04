@@ -313,7 +313,7 @@ function App() {
                   Profit in %
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
-                  {apy > 200 && amount ? `${parseFloat(percentGain.toString().slice(0, 6))}%` : "0%"}
+                  {apy > 200 && amount && percentGain ? `${parseFloat(percentGain.toString().slice(0, 6))}%` : "0%"}
                 </Typography>
               </Grid>
             </Grid>
