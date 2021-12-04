@@ -19,13 +19,16 @@ const NavigationBar = () => {
     <AppBar>
       <Toolbar>
         <Image src={Logo} alt="Picture of the author" width={40} height={40} />
-        <Typography
-          variant="h6"
-          style={{ color: "#d8cab9", textDecoration: "none" }}
-          sx={{ marginLeft: 3, flexGrow: 1, marginTop: 0.5 }}
-        >
-          Home
-        </Typography>
+        <Link sx={{ marginLeft: 3, flexGrow: 1, marginTop: 0.5 }} href="/">
+          <Typography
+            style={{ color: "#d8cab9", textDecoration: "none" }}
+            variant="h6"
+            component="div"
+          >
+            Home
+          </Typography>
+        </Link>
+
         <LinkContainer>
           <Link
             style={{ color: "#d8cab9", textDecoration: "none" }}
