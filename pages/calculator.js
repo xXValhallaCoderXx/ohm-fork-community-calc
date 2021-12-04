@@ -19,15 +19,15 @@ var usdFormat = new Intl.NumberFormat("en-US", {
 
 var percentFormat = new Intl.NumberFormat("en-US", {
   style: "percent",
-  minimumFractionDigits: 5,
+  minimumFractionDigits: 2,
   maximumFractionDigits: 5,
 });
 
 function App() {
   // TODO - Use some kind of reducer / state management
   const [nmsPrice, setNmsPrice] = useState(0);
-  const [yieldAPY, setYieldAPY] = useState(0);
-  const [balance, setBalance] = useState(0);
+  const [apy, setApy] = useState(0);
+
   const [amount, setAmount] = useState(0);
   const [customYield, setCustomYield] = useState("");
   const [purchasePrice, setPurchasePrice] = useState("");
@@ -41,10 +41,26 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log("PRUCHASE: ", purchasePrice);
-    console.log("AMOUNT: ", amount);
-    console.log("YIELD: ", customYield);
-  }, [amount, customYield, purchasePrice]);
+      console.log("YIELD: ",(((1666661428 / 100)-1)**(1/(3*365))-1) * 100)
+      const yieldRate = (((1666661428 / 100)-1)**(1/(3*365))-1) * 100;
+      const numberOfToken = 1 * (1+(yieldRate / 100))**(3 * 30);
+      console.log("NUMBER OF TOKEN: ", numberOfToken)
+      const totalValue = numberOfToken * 622.69;
+      console.log("TOTL:", totalValue)
+      
+  }, [apy])
+  // useEffect(() => {
+  //   console.log("PRUCHASE: ", purchasePrice);
+  //   console.log("AMOUNT: ", amount);
+  //   console.log("YIELD: ", customYield);
+  //   console.log("DAYS: ", days);
+  //   const amountInNms = amount * (1 + customYield) ** (3 * days);
+  //   const nmsParsed = parseFloat(amountInNms.toString().slice(0, 6));
+  //   const priceParsed = parseFloat(purchasePrice);
+
+  //   console.log("NMS: ", nmsParsed);
+  //   console.log("AMOUNT IN USD: ", priceParsed);
+  // }, [amount, customYield, purchasePrice, days]);
 
   return (
     <Layout>
@@ -86,6 +102,25 @@ function App() {
                   style={{ fontWeight: 400, color: "#A2A3A3" }}
                   variant="h5"
                 >
+                  Current APY
+                </Typography>
+                <Typography
+                  style={{
+                    textAlign: "center",
+                    width: "100%",
+                    color: "white",
+                    fontSize: 22,
+                    fontWeight: 500,
+                  }}
+                >
+                  {percentFormat.format(apy / 100)}
+                </Typography>
+              </div>
+              <div>
+                <Typography
+                  style={{ fontWeight: 400, color: "#A2A3A3" }}
+                  variant="h5"
+                >
                   Current Yield Reward
                 </Typography>
                 <Typography
@@ -108,7 +143,7 @@ function App() {
             <div
               style={{
                 padding: 20,
-          
+
                 marginTop: 35,
               }}
             >
@@ -116,6 +151,8 @@ function App() {
                 size="small"
                 defaultValue={days}
                 valueLabelDisplay="on"
+                value={days}
+                onChange={(e) => setDays(e.target.value)}
                 valueLabelFormat={(value) => <div>{value} Days</div>}
                 color="secondary"
               />
@@ -123,14 +160,20 @@ function App() {
             <ContentRow>
               <FormContainer>
                 <TextField
-                  id="outlined-basic"
-                  label="NMS Quantity"
+                  label="Current APY (%)"
+                  placeholder="Enter APY"
                   variant="outlined"
                   color="secondary"
                   focused
                   inputProps={fontColor}
-                  placeholder="Enter NMS Quantity"
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={(e) => setApy(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <div style={{ color: "#A2A3A3" }}>%</div>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <TextField
                   style={{ marginTop: 20, marginBottom: 20 }}
@@ -150,6 +193,18 @@ function App() {
                   }}
                 />
                 <TextField
+                  id="outlined-basic"
+                  label="NMS Quantity"
+                  variant="outlined"
+                  color="secondary"
+                  focused
+                  inputProps={fontColor}
+                  placeholder="Enter NMS Quantity"
+                  onChange={(e) => setAmount(e.target.value)}
+                />
+
+                <TextField
+                  style={{ marginTop: 20 }}
                   label="NMS Purchase Price ($)"
                   placeholder="Enter purchase price"
                   variant="outlined"
