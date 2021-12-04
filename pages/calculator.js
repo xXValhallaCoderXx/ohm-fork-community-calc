@@ -35,9 +35,14 @@ function App() {
   const [totalToken, setTotalToken] = useState(0);
   const [profit, setProfit] = useState(0);
   const [purchasePrice, setPurchasePrice] = useState("");
+
+  const [totalNms, setTotalNms] = useState(0)
   const [days, setDays] = useState(30);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
+
+
+
   useEffect(() => {
     // TODO - Move this API call out of UI layer
     axios.get("/api/calculator").then((res) => {
@@ -46,47 +51,33 @@ function App() {
   }, []);
 
   useEffect(() => {
-    setPurchasePrice(nmsPrice)
-  }, [nmsPrice])
-
-  useEffect(() => {
-    console.log(
-      "YIELD: ",
-      ((1666661428 / 100 - 1) ** (1 / (3 * 365)) - 1) * 100
-    );
-    const yieldRate = ((1666661428 / 100 - 1) ** (1 / (3 * 365)) - 1) * 100;
-    const numberOfToken = 1 * (1 + yieldRate / 100) ** (3 * 30);
-    console.log("NUMBER OF TOKEN: ", numberOfToken);
-    const totalValue = numberOfToken * 622.69;
-    console.log("TOTL:", totalValue);
-  }, [apy]);
+    setPurchasePrice(nmsPrice);
+  }, [nmsPrice]);
 
   useEffect(() => {
     // Handle Yield
-    console.log("APY: ", apy);
     const yieldRate = ((apy / 100 - 1) ** (1 / (3 * 365)) - 1) * 100;
     const totalTokens = 1 * (1 + yieldRate / 100) ** (3 * 30);
     setYieldRate(yieldRate);
     setTotalToken(totalTokens);
-    console.log("PURCHADE PRICE: ", purchasePrice);
     setProfit(totalToken * purchasePrice);
   }, [apy]);
 
-  console.log("TOKEN TOTAL: ", totalToken);
-  console.log("PROFIT: ", profit);
-  // useEffect(() => {
-  //   console.log("PRUCHASE: ", purchasePrice);
-  //   console.log("AMOUNT: ", amount);
-  //   console.log("YIELD: ", customYield);
-  //   console.log("DAYS: ", days);
-  //   const amountInNms = amount * (1 + customYield) ** (3 * days);
-  //   const nmsParsed = parseFloat(amountInNms.toString().slice(0, 6));
-  //   const priceParsed = parseFloat(purchasePrice);
+  useEffect(() => {
+    console.log("PRUCHASE: ", purchasePrice);
+    console.log("AMOUNT: ", amount);
+    console.log("YIELD: ", yieldRate);
+    console.log("DAYS: ", days);
+    const amountInNms = amount * (1 + yieldRate) ** (3 * days);
+    setTotalNms(amountInNms)
+    const nmsParsed = parseFloat(amountInNms.toString().slice(0, 6));
+    const priceParsed = parseFloat(purchasePrice);
 
-  //   console.log("NMS: ", nmsParsed);
-  //   console.log("AMOUNT IN USD: ", priceParsed);
-  // }, [amount, customYield, purchasePrice, days]);
+    console.log("NMS: ", nmsParsed);
+    console.log("AMOUNT IN USD: ", priceParsed);
+  }, [amount, yieldRate, purchasePrice, days]);
 
+  // TODO - Make this shit into components
   return (
     <Layout>
       <TitleRow>Nemesis Calculator</TitleRow>
@@ -142,7 +133,7 @@ function App() {
                 fontWeight={500}
                 color="white"
               >
-                {yieldRate ? percentFormat.format(yieldRate / 100) : "N / A"}
+                {yieldRate ? percentFormat.format(yieldRate / 100) : "0.00%"}
               </Typography>
             </Grid>
             <Grid item xs={12} mt={{ xs: 5, md: 7 }}>
@@ -165,10 +156,11 @@ function App() {
                 variant="outlined"
                 color="secondary"
                 focused
+                
                 size={matches ? "small" : ""}
                 fullWidth
                 inputProps={fontColor}
-                onChange={(e) => setApy(e.target.value)}
+                onChange={(e) => setApy(e.target.value.replace(/,/g, ''))}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="start">
@@ -187,7 +179,7 @@ function App() {
                 focused
                 size={matches ? "small" : ""}
                 fullWidth
-                value={yieldRate ? yieldRate : "0.00"}
+                value={yieldRate ? yieldRate.toFixed(5) : "0.00"}
                 inputProps={fontColor}
                 onChange={(e) => setYieldRate(e.target.value)}
                 InputProps={{
@@ -278,7 +270,7 @@ function App() {
                   NMS Rewards Estimate
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
-                  {totalToken ? Number.parseFloat(totalToken).toFixed(5) : 0}
+                  {totalToken ? parseFloat(totalNms.toString().slice(0, 6)) : 0}
                 </Typography>
               </Grid>
               <Grid
@@ -300,7 +292,7 @@ function App() {
                   USD Value Estimate
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
-                  {profit ? usdFormat.format(profit) : "$0.00"}
+                  {totalNms ? usdFormat.format( parseFloat(totalNms.toString().slice(0, 6)) * purchasePrice) : "$0.00"}
                 </Typography>
               </Grid>
             </Grid>
@@ -347,44 +339,6 @@ const CalculatorContainer = styled(Card)`
     width: 800px;
     margin-top: 50px;
   }
-`;
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const TopRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  flex-direction: row;
-`;
-
-const CardContainer = styled(Card)`
-  border: 2px solid #;
-
-  padding: 20px;
-`;
-
-const ContentRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-`;
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  pading: 10px;
-  width: 350px;
-`;
-
-const InfoRow = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 export default App;
