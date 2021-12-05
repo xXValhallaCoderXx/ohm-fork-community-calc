@@ -5,6 +5,7 @@ import theme from "../shared/styles/theme";
 import createEmotionCache from "../config/emotion-cache";
 
 export default class MyDocument extends Document {
+
   render() {
     return (
       <Html lang="en">
