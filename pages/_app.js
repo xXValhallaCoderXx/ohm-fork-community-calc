@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import React, { useEffect } from "react";
 
 import theme from "../shared/styles/theme";
+import mixpanel from "mixpanel-browser";
 
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,7 +13,12 @@ const clientSideEmotionCache = createEmotionCache();
 
 function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "development") {
+      mixpanel.init("e204686e5d9e588dd5a5144dbeb8ef6b");
+      mixpanel.track(`PAGE HIT - ${window.location.pathname}`);
+    }
+  }, []);
   return (
     <CacheProvider value={clientSideEmotionCache}>
       <ThemeProvider theme={theme}>
