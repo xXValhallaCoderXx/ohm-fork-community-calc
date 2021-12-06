@@ -39,15 +39,14 @@ const NavigationBar = () => {
             </Typography>
           </Link>
 
-          {/* <Link
+          <Link
             style={{ color: "#d8cab9", textDecoration: "none" }}
             href="/faq"
-          
           >
             <Typography variant="h6" component="div">
               Faq
             </Typography>
-          </Link> */}
+          </Link>
         </LinkContainer>
       </Toolbar>
     </AppBar>
