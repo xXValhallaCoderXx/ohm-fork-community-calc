@@ -35,11 +35,11 @@ function App() {
   const [totalToken, setTotalToken] = useState(0);
   const [value, setTotalValue] = useState(0);
   const [purchasePrice, setPurchasePrice] = useState("");
-  const [percentGain, setPercentGain] = useState(0)
+  const [percentGain, setPercentGain] = useState(0);
   const [days, setDays] = useState(30);
+  const [futurePrice, setFuturePrice] = useState(0);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
-
 
   useEffect(() => {
     // TODO - Move this API call out of UI layer
@@ -60,13 +60,18 @@ function App() {
     const epochYield = ((apy / 100 - 1) ** (1 / (3 * 365)) - 1) * 100;
     const numberOfToken = amount * (1 + epochYield / 100) ** (3 * days);
 
-    const totalValue = numberOfToken * purchasePrice;
+    console.log("PURCHASE PRICE: ", purchasePrice);
+    console.log("FUTURE PRICE: ", futurePrice);
+    // TODO - FIX THIS SHIT 
+    const calcPrice = futurePrice === "" || futurePrice === 0 ? purchasePrice : futurePrice;
+    console.log("CALC PRICE:", calcPrice);
+    const totalValue = numberOfToken * calcPrice;
     setTotalToken(numberOfToken);
     setTotalValue(totalValue);
-   const increase = totalValue - (amount * purchasePrice)
-   const result = increase / (amount * purchasePrice) * 100;
-   setPercentGain(result)
-  }, [amount, yieldRate, purchasePrice, days, apy]);
+    const increase = totalValue - amount * calcPrice;
+    const result = (increase / (amount * calcPrice)) * 100;
+    setPercentGain(result);
+  }, [amount, yieldRate, purchasePrice, days, apy, futurePrice]);
 
   // TODO - Make this shit into components
   return (
@@ -196,6 +201,13 @@ function App() {
                 inputProps={fontColor}
                 placeholder="Enter NMS Quantity"
                 onChange={(e) => setAmount(e.target.value)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      <div style={{ color: "#A2A3A3" }}>NMS</div>
+                    </InputAdornment>
+                  ),
+                }}
               />
               <TextField
                 style={{ marginTop: 20 }}
@@ -218,6 +230,27 @@ function App() {
                   ),
                 }}
               />
+              <TextField
+                style={{ marginTop: 20 }}
+                label="NMS Future Price ($)"
+                placeholder="Enter future price"
+                variant="outlined"
+                color="secondary"
+                focused
+                type="number"
+                fullWidth
+                size={matches ? "small" : ""}
+                value={futurePrice === 0 ? purchasePrice : futurePrice}
+                inputProps={fontColor}
+                onChange={(e) => setFuturePrice(e.target.value)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      <div style={{ color: "#A2A3A3" }}>$</div>
+                    </InputAdornment>
+                  ),
+                }}
+              />
             </Grid>
             <Grid
               item
@@ -230,19 +263,20 @@ function App() {
                 item
                 xs={12}
                 mt={{ xs: 2, md: 0 }}
+                marginBottom={1}
                 container
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center"
               >
                 <Typography
-                  fontSize={{ xs: 12, md: 15 }}
+                  fontSize={{ xs: 12, md: 18 }}
                   fontWeight={500}
                   style={{
                     color: "#A2A3A3",
                   }}
                 >
-                  Your Initial Investment
+                  Initial Investment
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
                   {usdFormat.format(amount * purchasePrice)}
@@ -252,19 +286,20 @@ function App() {
                 item
                 xs={12}
                 mt={{ xs: 2, md: 0 }}
+                marginBottom={1}
                 container
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center"
               >
                 <Typography
-                  fontSize={{ xs: 10, md: 13 }}
+                  fontSize={{ xs: 12, md: 18 }}
                   fontWeight={500}
                   style={{
                     color: "#A2A3A3",
                   }}
                 >
-                  NMS Rewards Estimate
+                  NMS Rewards Est.
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
                   {totalToken
@@ -274,6 +309,7 @@ function App() {
               </Grid>
               <Grid
                 item
+                marginBottom={1}
                 xs={12}
                 mt={{ xs: 2, md: 0 }}
                 container
@@ -282,13 +318,13 @@ function App() {
                 alignItems="center"
               >
                 <Typography
-                  fontSize={{ xs: 10, md: 13 }}
+                  fontSize={{ xs: 12, md: 18 }}
                   fontWeight={500}
                   style={{
                     color: "#A2A3A3",
                   }}
                 >
-                  USD Value Estimate
+                  USD Value Est.
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
                   {apy > 200 ? usdFormat.format(value) : "$0.00"}
@@ -304,7 +340,7 @@ function App() {
                 alignItems="center"
               >
                 <Typography
-                  fontSize={{ xs: 10, md: 13 }}
+                  fontSize={{ xs: 12, md: 18 }}
                   fontWeight={500}
                   style={{
                     color: "#A2A3A3",
@@ -313,7 +349,9 @@ function App() {
                   Profit in %
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
-                  {apy > 200 && amount ? `${parseFloat(percentGain.toString().slice(0, 6))}%` : "0%"}
+                  {apy > 200 && amount
+                    ? `${parseFloat(percentGain).toFixed(2)}%`
+                    : "0%"}
                 </Typography>
               </Grid>
             </Grid>
@@ -336,7 +374,6 @@ function App() {
     </Layout>
   );
 }
-
 
 const TitleRow = styled.div`
   margin-top: 20px;
