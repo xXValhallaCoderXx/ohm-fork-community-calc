@@ -38,7 +38,7 @@ const NavigationBar = () => {
               Calculator
             </Typography>
           </Link>
-
+{/* 
           <Link
             style={{ color: "#d8cab9", textDecoration: "none" }}
             href="/faq"
@@ -46,7 +46,7 @@ const NavigationBar = () => {
             <Typography variant="h6" component="div">
               Faq
             </Typography>
-          </Link>
+          </Link> */}
         </LinkContainer>
       </Toolbar>
     </AppBar>
