@@ -90,7 +90,11 @@ function App() {
     setTotalToken(compundedTokens);
     setTotalValue(totalValue);
 
-    setPercentGain(percIncrease(amount * purchasePrice, totalValue));
+    // Check hack to get rid of Nan on init
+    if(amount && purchasePrice && totalValue){
+      setPercentGain(percIncrease(amount * purchasePrice, totalValue));
+    }
+    
   }, [amount, yieldRate, purchasePrice, days, apy, futurePrice]);
 
   // TODO - Make this shit into components
@@ -371,7 +375,7 @@ function App() {
                 </Typography>
                 <Typography
                   fontSize={{ xs: 15, md: 17 }}
-                  color={percentGain > 0 ? "green" : "red"}
+                  color={percentGain === 0 ? "white" : percentGain > 0 ? "green" : "red"}
                 >
                   {apy > 200 && amount ? `${percentGain}%` : "0%"}
                 </Typography>
