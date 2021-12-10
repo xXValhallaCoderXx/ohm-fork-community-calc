@@ -55,22 +55,42 @@ function App() {
     const yieldRate = ((apy / 100 - 1) ** (1 / (3 * 365)) - 1) * 100;
     setYieldRate(yieldRate);
   }, [apy]);
+  function getPercentageChange(oldNumber, newNumber) {
+    var decreaseValue = oldNumber - newNumber;
+
+    return (decreaseValue / oldNumber) * 100;
+  }
+
+  function relDiff(a, b) {
+    return 100 * Math.abs((a - b) / ((a + b) / 2));
+  }
+
+  function percIncrease(a, b) {
+    let percent;
+    if (b !== 0) {
+      if (a !== 0) {
+        percent = ((b - a) / a) * 100;
+      } else {
+        percent = b * 100;
+      }
+    } else {
+      percent = -a * 100;
+    }
+    return percent.toFixed(2);
+  }
 
   useEffect(() => {
-    const epochYield = ((apy / 100 - 1) ** (1 / (3 * 365)) - 1) * 100;
-    const numberOfToken = amount * (1 + epochYield / 100) ** (3 * days);
+    const compundedTokens = amount * (1 + yieldRate / 100) ** (3 * days);
+    // TODO - FIX THIS SHIT
+    const calcPrice =
+      futurePrice === "" || futurePrice === 0 ? purchasePrice : futurePrice;
 
-    console.log("PURCHASE PRICE: ", purchasePrice);
-    console.log("FUTURE PRICE: ", futurePrice);
-    // TODO - FIX THIS SHIT 
-    const calcPrice = futurePrice === "" || futurePrice === 0 ? purchasePrice : futurePrice;
-    console.log("CALC PRICE:", calcPrice);
-    const totalValue = numberOfToken * calcPrice;
-    setTotalToken(numberOfToken);
+    const totalValue = compundedTokens * calcPrice;
+
+    setTotalToken(compundedTokens);
     setTotalValue(totalValue);
-    const increase = totalValue - amount * calcPrice;
-    const result = (increase / (amount * calcPrice)) * 100;
-    setPercentGain(result);
+
+    setPercentGain(percIncrease(amount * purchasePrice, totalValue));
   }, [amount, yieldRate, purchasePrice, days, apy, futurePrice]);
 
   // TODO - Make this shit into components
@@ -154,6 +174,7 @@ function App() {
                 focused
                 type="number"
                 min="0"
+                onPaste={(e) => setApy(e.target.value.replace(/,/g, ""))}
                 size={matches ? "small" : ""}
                 fullWidth
                 inputProps={fontColor}
@@ -348,10 +369,11 @@ function App() {
                 >
                   Profit in %
                 </Typography>
-                <Typography fontSize={{ xs: 15, md: 17 }} color="white">
-                  {apy > 200 && amount
-                    ? `${parseFloat(percentGain).toFixed(2)}%`
-                    : "0%"}
+                <Typography
+                  fontSize={{ xs: 15, md: 17 }}
+                  color={percentGain > 0 ? "green" : "red"}
+                >
+                  {apy > 200 && amount ? `${percentGain}%` : "0%"}
                 </Typography>
               </Grid>
             </Grid>
