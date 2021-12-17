@@ -16,7 +16,7 @@ let theme = createTheme({
       main: "#17191B",
     },
     secondary: {
-      main: "#d8cab9",
+      main: "#F22828",
     },
     info: {
       main: "hsla(0, 0%, 100%, .6)"

@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default async function handler(req, res) {
   const coingGecko = await axios.get(
-    "https://api.coingecko.com/api/v3/coins/nemesis-dao"
+    "https://api.coingecko.com/api/v3/coins/ragnarokdao"
   );
 
   if (coingGecko.status === 200 && coingGecko.data.id) {

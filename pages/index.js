@@ -4,7 +4,7 @@ import styles from "../styles/Home.module.css";
 import { Typography } from "@mui/material";
 import Image from "next/image";
 import Layout from "../shared/components/Layout/layout";
-import Logo from "../shared/images/logo.png";
+import Logo from "../shared/images/wolf.png";
 export default function Home() {
   return (
     <Layout>
@@ -23,12 +23,13 @@ export default function Home() {
           alt="Picture of the author"
           width={350}
           height={350}
+
         />
         <Typography
-        sx={{marginBottom: 5}}
+        fontSize={{xs: 50, md: 55}}
+        sx={{marginBottom: 3}}
           style={{
             color: "white",
-            fontSize: 55,
             fontWeight: 700,
             marginTop: 50,
             textAlign: "center",
@@ -37,9 +38,10 @@ export default function Home() {
           Community Project
         </Typography>
         <Typography
+        fontSize={{xs: 20, md: 24}}
           style={{
-            color: "#fdedda",
-            fontSize: 20,
+            color: "#F22828",
+     
             fontWeight: 500,
             textAlign: "center",
           }}

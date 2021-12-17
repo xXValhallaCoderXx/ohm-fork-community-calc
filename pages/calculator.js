@@ -36,7 +36,7 @@ function App() {
   const [value, setTotalValue] = useState(0);
   const [purchasePrice, setPurchasePrice] = useState("");
   const [percentGain, setPercentGain] = useState(0);
-  const [days, setDays] = useState(30);
+  const [days, setDays] = useState(3);
   const [futurePrice, setFuturePrice] = useState(0);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
@@ -100,18 +100,18 @@ function App() {
   // TODO - Make this shit into components
   return (
     <Layout>
-      <TitleRow>Nemesis Calculator</TitleRow>
+      <TitleRow>Ragnarok Calculator</TitleRow>
 
       <CalculatorContainer>
         <CardContent>
           <Grid container>
             <Grid item xs={12} md={4}>
               <Typography
-                style={{ color: "#A2A3A3" }}
+                style={{ color: "#F22828" }}
                 textAlign="center"
                 fontSize={{ xs: 20, md: 22 }}
               >
-                Current Nemesis Price
+                Current RGK Price
               </Typography>
               <Typography
                 textAlign="center"
@@ -124,7 +124,7 @@ function App() {
             </Grid>
             <Grid item xs={12} md={4} mt={{ xs: 2, md: 0 }}>
               <Typography
-                style={{ color: "#A2A3A3" }}
+                style={{ color: "#F22828" }}
                 textAlign="center"
                 fontSize={{ xs: 20, md: 22 }}
               >
@@ -141,7 +141,7 @@ function App() {
             </Grid>
             <Grid item xs={12} md={4} mt={{ xs: 2, md: 0 }}>
               <Typography
-                style={{ color: "#A2A3A3" }}
+                style={{ color: "#F22828" }}
                 textAlign="center"
                 fontSize={{ xs: 20, md: 22 }}
               >
@@ -163,7 +163,7 @@ function App() {
                 valueLabelDisplay="on"
                 value={days}
                 min={1}
-                max={365}
+                max={14}
                 onChange={(e) => setDays(e.target.value)}
                 valueLabelFormat={(value) => <div>{value} Days</div>}
                 color="secondary"
@@ -217,26 +217,26 @@ function App() {
               />
               <TextField
                 fullWidth
-                label="NMS Quantity"
+                label="RGK Quantity"
                 variant="outlined"
                 color="secondary"
                 focused
                 type="number"
                 size={matches ? "small" : ""}
                 inputProps={fontColor}
-                placeholder="Enter NMS Quantity"
+                placeholder="Enter RGK Quantity"
                 onChange={(e) => setAmount(e.target.value)}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="start">
-                      <div style={{ color: "#A2A3A3" }}>NMS</div>
+                      <div style={{ color: "#A2A3A3" }}>RGK</div>
                     </InputAdornment>
                   ),
                 }}
               />
               <TextField
                 style={{ marginTop: 20 }}
-                label="NMS Purchase Price ($)"
+                label="RGK Purchase Price ($)"
                 placeholder="Enter purchase price"
                 variant="outlined"
                 color="secondary"
@@ -257,7 +257,7 @@ function App() {
               />
               <TextField
                 style={{ marginTop: 20 }}
-                label="NMS Future Price ($)"
+                label="RGK Future Price ($)"
                 placeholder="Enter future price"
                 variant="outlined"
                 color="secondary"
@@ -298,7 +298,7 @@ function App() {
                   fontSize={{ xs: 12, md: 18 }}
                   fontWeight={500}
                   style={{
-                    color: "#A2A3A3",
+                    color: "#C73636",
                   }}
                 >
                   Initial Investment
@@ -321,10 +321,10 @@ function App() {
                   fontSize={{ xs: 12, md: 18 }}
                   fontWeight={500}
                   style={{
-                    color: "#A2A3A3",
+                    color: "#C73636",
                   }}
                 >
-                  NMS Rewards Est.
+                  RGK Rewards Est.
                 </Typography>
                 <Typography fontSize={{ xs: 15, md: 17 }} color="white">
                   {totalToken
@@ -346,7 +346,7 @@ function App() {
                   fontSize={{ xs: 12, md: 18 }}
                   fontWeight={500}
                   style={{
-                    color: "#A2A3A3",
+                    color: "#C73636",
                   }}
                 >
                   USD Value Est.
@@ -368,14 +368,14 @@ function App() {
                   fontSize={{ xs: 12, md: 18 }}
                   fontWeight={500}
                   style={{
-                    color: "#A2A3A3",
+                    color: "#C73636",
                   }}
                 >
                   Profit in %
                 </Typography>
                 <Typography
                   fontSize={{ xs: 15, md: 17 }}
-                  color={percentGain === 0 ? "white" : percentGain > 0 ? "green" : "red"}
+                  color={percentGain === 0 ? "white" : percentGain > 0 ? "green" : "#C73636"}
                 >
                   {apy > 200 && amount ? `${percentGain}%` : "0%"}
                 </Typography>
@@ -386,11 +386,11 @@ function App() {
       </CalculatorContainer>
       {matches ? null : (
         <Typography
-          fontWeight={400}
+          fontWeight={500}
           mt={5}
           fontSize={{ xs: 12, md: 15 }}
           textAlign="center"
-          style={{ color: "#A2A3A3" }}
+          style={{ color: "white", letterSpacing: "0.6px" }}
           variant="h6"
         >
           Note: This is in early stages - More features can be added and
@@ -403,7 +403,8 @@ function App() {
 
 const TitleRow = styled.div`
   margin-top: 20px;
-  color: ${({ theme }) => theme.palette.secondary.main};
+  color: #F22828;
+  font-weight: 500;
   ${(props) => props.theme.breakpoints.down("md")} {
     display: none;
   }
@@ -414,7 +415,10 @@ const TitleRow = styled.div`
 
 const CalculatorContainer = styled(Card)`
   padding: 10px;
-  background-color: ${({ theme }) => theme.palette.primary.main};
+  background-image: url('/dots.svg');
+  background-color: #263238;
+  border: 1px solid #C73636;
+  box-shadow: 15px 15px 100px -48px #c73636;
   border-radius: 10px;
   ${(props) => props.theme.breakpoints.down("md")} {
     width: 85%;

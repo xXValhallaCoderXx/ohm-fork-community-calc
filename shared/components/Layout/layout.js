@@ -2,6 +2,7 @@
 import styled from '@emotion/styled'
 
 import NavigationBar from "../Navigation/top-nav";
+import bg from "../../images/bg.svg"
 
 const LayoutSimpleContainer = ({ children }) => {
   return (
@@ -15,7 +16,8 @@ const LayoutSimpleContainer = ({ children }) => {
 const LayoutContainer = styled.div`
 height:100%;
 min-height: 100vh;
-background-color: #1e232b;
+background-color: #263238;
+background-image: url('/bg.svg')
 `
 
 const Container = styled.div`
